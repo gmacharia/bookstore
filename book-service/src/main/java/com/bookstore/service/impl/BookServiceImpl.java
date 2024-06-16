@@ -77,7 +77,7 @@ public class BookServiceImpl implements BookService {
 
         HashMap<String, Object> responseMap = new HashMap<>();
 
-        List<BookDTO> bookTitle = bookRepository.findByBookTitle(bookDTO.getTitle());
+        List<?> bookTitle = bookRepository.findByTitle(bookDTO.getTitle());
 
         if (!bookTitle.isEmpty()) {
             responseMap.put("Message", bookDTO.getTitle() + " Already Exist");
@@ -92,6 +92,6 @@ public class BookServiceImpl implements BookService {
                 .build();
 
         bookRepository.save(bookEntity);
-        return new ResponseEntity<>(bookRepository, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(bookEntity, HttpStatus.ACCEPTED);
     }
 }

@@ -6,7 +6,6 @@ package com.bookstore.conroller;
 
 import com.bookstore.request.dto.BookDTO;
 import com.bookstore.service.BookService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,18 +33,17 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
-        return new ResponseEntity<>(bookService.addBook(bookDTO), HttpStatus.CREATED);
+        return bookService.addBook(bookDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDetails) {
-        return new ResponseEntity<>(bookService.updateBook(id, bookDetails), HttpStatus.OK);
+        return bookService.updateBook(id, bookDetails);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return bookService.deleteBook(id);
     }
 
     @GetMapping("/{id}")

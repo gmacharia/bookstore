@@ -5,7 +5,6 @@
 package com.bookstore.repository;
 
 import com.bookstore.entity.BookEntity;
-import com.bookstore.request.dto.BookDTO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,5 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author kobe
  */
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
-     List<BookDTO> findByBookTitle(String title);
+
+    List<?> findByTitle(String title);
 }
