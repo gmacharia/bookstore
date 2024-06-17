@@ -29,7 +29,7 @@ public class BookEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long bookId;
     private String title;
     private String author;
     private String isbn;

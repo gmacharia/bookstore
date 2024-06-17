@@ -94,4 +94,18 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(bookEntity);
         return new ResponseEntity<>(bookEntity, HttpStatus.ACCEPTED);
     }
+
+    @Override
+    public ResponseEntity<?> getBookByTitle(String title) {
+        HashMap<String, Object> responseMap = new HashMap<>();
+
+        List<?> bookTitle = bookRepository.findByTitle(title);
+
+        if (bookTitle.isEmpty()) {
+            responseMap.put("Title ", title + " doesnt Exist");
+            return new ResponseEntity<>(responseMap, HttpStatus.ACCEPTED);
+        }else{
+         return new ResponseEntity<>(bookTitle, HttpStatus.ACCEPTED);
+        }
+    }
 }

@@ -11,7 +11,6 @@ import com.bookstore.repository.CustomerRepository;
 import com.bookstore.service.CustomerService;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

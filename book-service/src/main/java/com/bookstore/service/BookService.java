@@ -18,5 +18,6 @@ public interface BookService {
    ResponseEntity<?> updateBook(Long id, BookDTO bookDetails);
    ResponseEntity<?> deleteBook(Long id);
    BookEntity getBookById(Long id);
+   ResponseEntity<?> getBookByTitle(String title);
    List<?> getAllBooks();
 }

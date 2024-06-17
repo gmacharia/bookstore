@@ -56,4 +56,9 @@ public class BookController {
         return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
     }
     
+    @GetMapping("/name/{title}")
+    public ResponseEntity<?> getBookByTitle(@PathVariable String title) {
+        return new ResponseEntity<>(bookService.getBookByTitle(title), HttpStatus.OK);
+    }
+    
 }
