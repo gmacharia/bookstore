@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS customer;
+
+CREATE TABLE customer (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    customerSurName VARCHAR(255),
+    customerOthertNames VARCHAR(255),
+    emailAddress VARCHAR(255) NOT NULL UNIQUE,
+    mobileNumber VARCHAR(255) NOT NULL UNIQUE
+);

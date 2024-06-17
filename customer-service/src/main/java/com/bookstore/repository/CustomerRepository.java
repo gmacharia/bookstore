@@ -4,9 +4,10 @@
  */
 package com.bookstore.repository;
 
-import com.bookstore.entity.BookEntity;
+import com.bookstore.entity.CustomerEntity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Repository;
  * @author kobe
  */
 @Repository
-public interface BookRepository extends JpaRepository<BookEntity, Long> {
-
-    List<?> findByTitle(String title);
+public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
+    
+     @Query(value = "SELECT * FROM customer t where mobileNumber = ?1",
+            nativeQuery = true)
+     List<?> findByMobileNumber(String mobileNumber);
 }
