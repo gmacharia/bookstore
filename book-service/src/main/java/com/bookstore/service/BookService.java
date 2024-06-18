@@ -4,20 +4,18 @@
  */
 package com.bookstore.service;
 
-import com.bookstore.entity.BookEntity;
 import com.bookstore.request.dto.BookDTO;
-import java.util.List;
-import org.springframework.http.ResponseEntity;
+import com.bookstore.response.dto.BookResponseDTO;
 
 /**
  *
  * @author kobe
  */
 public interface BookService {
-   ResponseEntity<?> addBook(BookDTO bookDTO);
-   ResponseEntity<?> updateBook(Long id, BookDTO bookDetails);
-   ResponseEntity<?> deleteBook(Long id);
-   BookEntity getBookById(Long id);
-   ResponseEntity<?> getBookByTitle(String title);
-   List<?> getAllBooks();
+   BookResponseDTO addBook(BookDTO bookDTO);
+   BookResponseDTO updateBook(Long id, BookDTO bookDetails);
+   BookResponseDTO deleteBook(Long id);
+   BookResponseDTO getBookById(Long id);
+   BookResponseDTO getBookByTitle(String title);
+   BookResponseDTO getAllBooks();
 }

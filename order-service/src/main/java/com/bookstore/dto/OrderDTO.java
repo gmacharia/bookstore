@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.bookstore.response.dto;
+package com.bookstore.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookResponseDTO {
-
-    private int statuscode;
-    private String statusmessage;
-    private Object response;
+public class OrderDTO {
+    private Long customerId;
+    private Long bookId;
+    private String mobileNumber;
 }

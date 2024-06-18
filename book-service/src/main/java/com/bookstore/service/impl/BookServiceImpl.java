@@ -4,19 +4,19 @@
  */
 package com.bookstore.service.impl;
 
+import com.bookstore.config.BookConfig;
 import com.bookstore.entity.BookEntity;
 import com.bookstore.exceptions.BookNotFoundException;
 import com.bookstore.exceptions.ResourceNotFoundException;
 import com.bookstore.repository.BookRepository;
 import com.bookstore.request.dto.BookDTO;
+import com.bookstore.response.dto.BookResponseDTO;
 import com.bookstore.service.BookService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final BookConfig bookConfig;
 
     @Override
-    public ResponseEntity<?> updateBook(Long id, BookDTO bookDetails) {
+    public BookResponseDTO updateBook(Long id, BookDTO bookDetails) {
         BookEntity updateBook = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
 
         updateBook.setTitle(bookDetails.getTitle());
@@ -42,13 +43,18 @@ public class BookServiceImpl implements BookService {
         updateBook.setPrice(bookDetails.getPrice());
         bookRepository.save(updateBook);
 
-        return new ResponseEntity<>(updateBook, HttpStatus.ACCEPTED);
+        BookResponseDTO responseDTO = BookResponseDTO.builder()
+                .statuscode(bookConfig.successcode())
+                .statusmessage(bookConfig.successstatusmessage())
+                .response(updateBook)
+                .build();
+
+        return responseDTO;
     }
 
     @Override
-    public ResponseEntity<?> deleteBook(Long id) {
+    public BookResponseDTO deleteBook(Long id) {
 
-        HashMap<String, Object> responseMap = new HashMap<>();
         Optional<BookEntity> bookExist = bookRepository.findById(id);
 
         if (bookExist.isEmpty()) {
@@ -56,23 +62,51 @@ public class BookServiceImpl implements BookService {
         } else {
             bookRepository.deleteById(id);
 
-            responseMap.put("Book with ID: ", id + " deleted successfully.");
-            return new ResponseEntity<>(responseMap, HttpStatus.ACCEPTED);
+            BookResponseDTO responseDTO = BookResponseDTO.builder()
+                    .statuscode(bookConfig.successcode())
+                    .statusmessage("Book with ID: " + id + " deleted successfully.")
+                    .response(null)
+                    .build();
+
+            return responseDTO;
         }
     }
 
     @Override
-    public BookEntity getBookById(Long id) {
-        return bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+    public BookResponseDTO getBookById(Long id) {
+        Optional<?> optionEntity = bookRepository.findById(id);
+
+        if (optionEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Book not found");
+        }
+
+        BookResponseDTO responseDTO = BookResponseDTO.builder()
+                .statuscode(bookConfig.successcode())
+                .statusmessage(bookConfig.successstatusmessage())
+                .response(optionEntity)
+                .build();
+         return responseDTO;
     }
 
     @Override
-    public List<?> getAllBooks() {
-        return bookRepository.findAll();
+    public BookResponseDTO getAllBooks() {
+        List<BookEntity> optionEntity = bookRepository.findAll();
+
+        if (optionEntity.isEmpty()) {
+            throw new ResourceNotFoundException(bookConfig.norecordfound());
+        }
+
+        BookResponseDTO responseDTO = BookResponseDTO.builder()
+                .statuscode(bookConfig.successcode())
+                .statusmessage(bookConfig.successstatusmessage())
+                .response(optionEntity)
+                .build();
+         return responseDTO;
+
     }
 
     @Override
-    public ResponseEntity<?> addBook(BookDTO bookDTO) {
+    public BookResponseDTO addBook(BookDTO bookDTO) {
         log.info("sanitized payload received before saving {}", bookDTO.toString());
 
         HashMap<String, Object> responseMap = new HashMap<>();
@@ -80,8 +114,16 @@ public class BookServiceImpl implements BookService {
         List<?> bookTitle = bookRepository.findByTitle(bookDTO.getTitle());
 
         if (!bookTitle.isEmpty()) {
+
             responseMap.put("Message", bookDTO.getTitle() + " Already Exist");
-            return new ResponseEntity<>(responseMap, HttpStatus.PRECONDITION_FAILED);
+
+            BookResponseDTO responseDTO = BookResponseDTO.builder()
+                    .statuscode(bookConfig.successcode())
+                    .statusmessage(bookConfig.successstatusmessage())
+                    .response(responseMap)
+                    .build();
+
+             return responseDTO;
         }
 
         BookEntity bookEntity = BookEntity.builder()
@@ -92,20 +134,40 @@ public class BookServiceImpl implements BookService {
                 .build();
 
         bookRepository.save(bookEntity);
-        return new ResponseEntity<>(bookEntity, HttpStatus.ACCEPTED);
+
+        BookResponseDTO responseDTO = BookResponseDTO.builder()
+                .statuscode(bookConfig.successcode())
+                .statusmessage(bookConfig.successstatusmessage())
+                .response(bookEntity)
+                .build();
+         return responseDTO;
     }
 
     @Override
-    public ResponseEntity<?> getBookByTitle(String title) {
+    public BookResponseDTO getBookByTitle(String title) {
         HashMap<String, Object> responseMap = new HashMap<>();
 
         List<?> bookTitle = bookRepository.findByTitle(title);
 
         if (bookTitle.isEmpty()) {
             responseMap.put("Title ", title + " doesnt Exist");
-            return new ResponseEntity<>(responseMap, HttpStatus.ACCEPTED);
-        }else{
-         return new ResponseEntity<>(bookTitle, HttpStatus.ACCEPTED);
+
+            BookResponseDTO responseDTO = BookResponseDTO.builder()
+                    .statuscode(bookConfig.successcode())
+                    .statusmessage(bookConfig.successstatusmessage())
+                    .response(responseMap)
+                    .build();
+
+            return responseDTO;
+        } else {
+
+            BookResponseDTO responseDTO = BookResponseDTO.builder()
+                    .statuscode(bookConfig.successcode())
+                    .statusmessage(bookConfig.successstatusmessage())
+                    .response(bookTitle)
+                    .build();
+
+             return responseDTO;
         }
     }
 }

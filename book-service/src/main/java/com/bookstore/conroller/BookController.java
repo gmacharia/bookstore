@@ -5,11 +5,10 @@
 package com.bookstore.conroller;
 
 import com.bookstore.request.dto.BookDTO;
+import com.bookstore.response.dto.BookResponseDTO;
 import com.bookstore.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,33 +31,33 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
+    public BookResponseDTO addBook(@RequestBody BookDTO bookDTO) {
         return bookService.addBook(bookDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDTO bookDetails) {
+    public BookResponseDTO updateBook(@PathVariable Long id, @RequestBody BookDTO bookDetails) {
         return bookService.updateBook(id, bookDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+    public BookResponseDTO deleteBook(@PathVariable Long id) {
         return bookService.deleteBook(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getBookById(@PathVariable Long id) {
-        return new ResponseEntity<>(bookService.getBookById(id), HttpStatus.OK);
+    public BookResponseDTO getBookById(@PathVariable Long id) {
+        return bookService.getBookById(id);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllBooks() {
-        return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
+    public BookResponseDTO getAllBooks() {
+        return bookService.getAllBooks();
     }
     
     @GetMapping("/name/{title}")
-    public ResponseEntity<?> getBookByTitle(@PathVariable String title) {
-        return new ResponseEntity<>(bookService.getBookByTitle(title), HttpStatus.OK);
+    public BookResponseDTO getBookByTitle(@PathVariable String title) {
+        return bookService.getBookByTitle(title);
     }
     
 }
