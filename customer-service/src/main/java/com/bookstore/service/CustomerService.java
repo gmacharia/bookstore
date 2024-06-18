@@ -5,15 +5,15 @@
 package com.bookstore.service;
 
 import com.bookstore.dto.CustomerDTO;
-import com.bookstore.entity.CustomerEntity;
-import org.springframework.http.ResponseEntity;
+import com.bookstore.dto.response.CustomerResponseDTO;
+
 
 /**
  *
  * @author kobe
  */
 public interface CustomerService {
-   ResponseEntity<?> addCustomer(CustomerDTO customerDTO);
-   ResponseEntity<?> updateCustomer(Long id, CustomerDTO customerDetails);
-   CustomerEntity getCustomerById(Long id);
+   CustomerResponseDTO addCustomer(CustomerDTO customerDTO);
+   CustomerResponseDTO updateCustomer(Long id, CustomerDTO customerDetails);
+   CustomerResponseDTO getCustomerById(Long id);
 }

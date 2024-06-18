@@ -114,7 +114,7 @@ class BookServiceApplicationTests {
                 .uri(BOOKS)
                 .body(BodyInserters.fromValue(createBook))
                 .exchange()
-                .expectStatus().isCreated()
+                .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.statuscode").isEqualTo(3)
                 .jsonPath("$.response.title").isEqualTo("This is a test record");
