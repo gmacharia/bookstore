@@ -5,6 +5,7 @@
 package com.bookstore.controller;
 
 import com.bookstore.dto.OrderDTO;
+import com.bookstore.dto.response.OrderResponseDTO;
 import com.bookstore.service.OrderService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -32,27 +33,27 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> addCustomer(@RequestBody OrderDTO orderDTO) {
+    public OrderResponseDTO addCustomer(@RequestBody OrderDTO orderDTO) {
         return orderService.addOrder(orderDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody OrderDTO orderDetails) {
+    public OrderResponseDTO updateCustomer(@PathVariable Long id, @RequestBody OrderDTO orderDetails) {
         return orderService.updateOrder(id, orderDetails);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable Long id) {
+    public ResponseEntity<?> getOrderById(@PathVariable Long id) {
         return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
     }
 
     @GetMapping("/customers/{customerId}/orders")
-    public ResponseEntity<List<?>> getOrdersByCustomerId(@PathVariable Long customerId) {
-        return new ResponseEntity<>(orderService.getOrdersByCustomerId(customerId), HttpStatus.OK);
+    public OrderResponseDTO getOrdersByCustomerId(@PathVariable Long customerId) {
+        return orderService.getOrdersByCustomerId(customerId);
     }
 
     @GetMapping("/books/{bookId}/orders")
-    public ResponseEntity<?> getBookById(@PathVariable Long bookId) {
-        return new ResponseEntity<>(orderService.getBookById(bookId), HttpStatus.OK);
+    public OrderResponseDTO getBookById(@PathVariable Long bookId) {
+        return orderService.getBookById(bookId);
     }
 }

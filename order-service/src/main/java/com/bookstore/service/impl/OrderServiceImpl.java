@@ -4,18 +4,17 @@
  */
 package com.bookstore.service.impl;
 
-import com.bookstore.dto.BookDTO;
+import com.bookstore.config.OrderConfig;
 import com.bookstore.dto.OrderDTO;
+import com.bookstore.dto.response.OrderResponseDTO;
 import com.bookstore.entity.OrderEntity;
 import com.bookstore.exception.ResourceNotFoundException;
 import com.bookstore.http.HttpRequestService;
 import com.bookstore.repository.OrderRepository;
 import com.bookstore.service.OrderService;
-import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderConfig orderConfig;
     private final HttpRequestService httpRequestService;
 
     @Override
-    public ResponseEntity<?> addOrder(OrderDTO orderrDTO) {
+    public OrderResponseDTO addOrder(OrderDTO orderrDTO) {
 
         OrderEntity orderEntity = OrderEntity.builder()
                 .bookId(orderrDTO.getBookId())
@@ -42,11 +42,17 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         orderRepository.save(orderEntity);
-        return new ResponseEntity<>(orderEntity, HttpStatus.OK);
+
+        OrderResponseDTO responseDTO = OrderResponseDTO.builder()
+                .statuscode(orderConfig.successcode())
+                .statusmessage(orderConfig.successstatusmessage())
+                .response(orderEntity)
+                .build();
+        return responseDTO;
     }
 
     @Override
-    public ResponseEntity<?> updateOrder(Long id, OrderDTO orderrDTO) {
+    public OrderResponseDTO updateOrder(Long id, OrderDTO orderrDTO) {
         OrderEntity updateOrder = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
         updateOrder.setBookId(orderrDTO.getBookId());
@@ -55,27 +61,52 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.save(updateOrder);
 
-        return new ResponseEntity<>(updateOrder, HttpStatus.OK);
+        OrderResponseDTO responseDTO = OrderResponseDTO.builder()
+                .statuscode(orderConfig.successcode())
+                .statusmessage(orderConfig.successstatusmessage())
+                .response(updateOrder)
+                .build();
+        return responseDTO;
     }
 
     @Override
-    public OrderEntity getOrderById(Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-    }
-    
-    @Override
-    public List<?> getOrdersByCustomerId(Long customerId) {
-        return orderRepository.findByCustomerId(customerId);
+    public OrderResponseDTO getOrderById(Long id) {
+        Optional<?> optionEntity = orderRepository.findById(id);
+
+        if (optionEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Order not found");
+        }
+
+        OrderResponseDTO responseDTO = OrderResponseDTO.builder()
+                .statuscode(orderConfig.successcode())
+                .statusmessage(orderConfig.successstatusmessage())
+                .response(optionEntity)
+                .build();
+        return responseDTO;
     }
 
     @Override
-    public BookDTO getBookById(Long bookId) {
+    public OrderResponseDTO getOrdersByCustomerId(Long customerId) {
+        Optional<?> optionEntity = orderRepository.findByCustomerId(customerId);
+
+        if (optionEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Customer not found");
+        }
+
+        OrderResponseDTO responseDTO = OrderResponseDTO.builder()
+                .statuscode(orderConfig.successcode())
+                .statusmessage(orderConfig.successstatusmessage())
+                .response(optionEntity)
+                .build();
+        return responseDTO;
+    }
+
+    @Override
+    public OrderResponseDTO getBookById(Long bookId) {
         //lets call book service
-        BookDTO bookDTO =  httpRequestService.getBookById(bookId);
-        
-        log.info("Book API response {}", bookDTO);
-        
-        return bookDTO;
-    }
+        OrderResponseDTO responseDTO = httpRequestService.getBookById(bookId);
 
+        log.info("Book API response {}", responseDTO);
+        return responseDTO;
+    }
 }

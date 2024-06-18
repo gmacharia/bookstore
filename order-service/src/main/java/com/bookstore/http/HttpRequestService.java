@@ -4,7 +4,7 @@
  */
 package com.bookstore.http;
 
-import com.bookstore.dto.BookDTO;
+import com.bookstore.dto.response.OrderResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class HttpRequestService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public BookDTO getBookById(Long id) {
+    public OrderResponseDTO getBookById(Long id) {
         String url = "http://localhost:8090/api/v1/books/" + id;
-        return restTemplate.getForObject(url, BookDTO.class);
+        return restTemplate.getForObject(url, OrderResponseDTO.class);
     }
 }

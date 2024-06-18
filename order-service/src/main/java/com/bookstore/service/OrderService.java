@@ -4,11 +4,8 @@
  */
 package com.bookstore.service;
 
-import com.bookstore.dto.BookDTO;
 import com.bookstore.dto.OrderDTO;
-import com.bookstore.entity.OrderEntity;
-import java.util.List;
-import org.springframework.http.ResponseEntity;
+import com.bookstore.dto.response.OrderResponseDTO;
 
 /**
  *
@@ -16,13 +13,13 @@ import org.springframework.http.ResponseEntity;
  */
 public interface OrderService {
 
-    ResponseEntity<?> addOrder(OrderDTO orderrDTO);
+    OrderResponseDTO addOrder(OrderDTO orderrDTO);
 
-    ResponseEntity<?> updateOrder(Long id, OrderDTO orderrDTO);
+    OrderResponseDTO updateOrder(Long id, OrderDTO orderrDTO);
 
-    OrderEntity getOrderById(Long id);
+    OrderResponseDTO getOrderById(Long id);
 
-    List<?> getOrdersByCustomerId(Long customerId);
+    OrderResponseDTO getOrdersByCustomerId(Long customerId);
 
-    BookDTO getBookById(Long bookId);
+    OrderResponseDTO getBookById(Long bookId);
 }
