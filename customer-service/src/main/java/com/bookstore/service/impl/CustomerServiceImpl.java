@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDTO updateCustomer(Long id, CustomerDTO customerDetails) {
         CustomerEntity updateCustomer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
-        updateCustomer.setCustomerOthertNames(customerDetails.getCustomerOthertNames());
+        updateCustomer.setCustomerOtherNames(customerDetails.getCustomerOthertNames());
         updateCustomer.setCustomerSurName(customerDetails.getCustomerSurName());
         updateCustomer.setEmailAddress(customerDetails.getEmailAddress());
         updateCustomer.setMobileNumber(customerDetails.getMobileNumber());
@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<?> optionEntity = customerRepository.findById(id);
 
         if (optionEntity.isEmpty()) {
-            throw new ResourceNotFoundException("Book not found");
+            throw new ResourceNotFoundException("Customer not found");
         }
 
         CustomerResponseDTO responseDTO = CustomerResponseDTO.builder()
@@ -88,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         CustomerEntity bookEntity = CustomerEntity.builder()
-                .customerOthertNames(customerDTO.getCustomerOthertNames())
+                .customerOtherNames(customerDTO.getCustomerOthertNames())
                 .customerSurName(customerDTO.getCustomerSurName())
                 .emailAddress(customerDTO.getEmailAddress())
                 .mobileNumber(customerDTO.getMobileNumber())

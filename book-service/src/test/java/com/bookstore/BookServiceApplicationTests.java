@@ -33,7 +33,7 @@ class BookServiceApplicationTests {
     public void testThatABookIsDeletedSuccessfully() {
         // Perform the deletion.
         this.webClient.delete()
-                .uri(BOOKS + "/1")
+                .uri(BOOKS + "/4")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -41,7 +41,7 @@ class BookServiceApplicationTests {
 
         // Confirm that the task was deleted successfully.
         this.webClient.get()
-                .uri(BOOKS + "/1")
+                .uri(BOOKS + "/4")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -84,7 +84,7 @@ class BookServiceApplicationTests {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.statuscode").isEqualTo(3)
-                .jsonPath("$.response.length()").isEqualTo("3");
+                .jsonPath("$.response.length()").isEqualTo("4");
     }
 
     @Test

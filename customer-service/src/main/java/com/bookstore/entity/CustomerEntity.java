@@ -31,7 +31,7 @@ public class CustomerEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
     private String customerSurName;
-    private String customerOthertNames;
+    private String customerOtherNames;
     private String emailAddress;
     private String mobileNumber;
 }

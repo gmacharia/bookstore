@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  service-registry:
+    image: service-registry
+    build: ./service-registry
+    ports:
+      - "8761:8761"
+
+  config-server:
+    image: config-server
+    build: ./config-server
+    ports:
+      - "8088:8088"
+
+  spring-gateway:
+    image: spring-gateway
+    build: ./spring-gateway
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  book-service:
+    image: book-service
+    build: ./book-service
+    ports:
+      - "8281:8281"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  order-service:
+    image: order-service
+    build: ./order-service
+    ports:
+      - "8282:8282"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  customer-service:
+    image: customer-service
+    build: ./customer-service
+    ports:
+      - "8283:8283"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+
