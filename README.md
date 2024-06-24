@@ -55,6 +55,7 @@ http://localhost:8090/v1/tasks/webjars/swagger-ui/index.html#/
 
 #### Step #4 Setting up the schemas on our database.
 
+```
 mysql> desc books;
 +--------------+--------------+------+-----+-------------------+-----------------------------------------------+
 | Field        | Type         | Null | Key | Default           | Extra                                         |
@@ -89,5 +90,5 @@ mysql> desc orders;
 | mobileNumber | varchar(255) | YES  | MUL | NULL    |                |
 | orderDate    | datetime     | YES  |     | NULL    |                |
 +--------------+--------------+------+-----+---------+----------------+
-
+```
 ### Ends.
