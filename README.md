@@ -45,6 +45,17 @@ curl --location 'http://localhost:8080/jwt' --header 'Content-Type: application/
 ```
 The above should generate a token that can be used to authenticate your requests.
 
+```
+Docker commands
+
+sh deployment.sh
+
+docker images
+docker container ps
+docker stop <containerId>
+```
+
+
 #### Step 4. - Running the task service.
 Run the book service. To access the swagger documentation, Use the following url
 
