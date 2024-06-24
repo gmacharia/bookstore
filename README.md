@@ -102,4 +102,34 @@ mysql> desc orders;
 | orderDate    | datetime     | YES  |     | NULL    |                |
 +--------------+--------------+------+-----+---------+----------------+
 ```
+#### Endpoints to use
+
+```
+Search all books http://localhost:8090/api/v1/books
+Search a particular book http://localhost:8090/api/v1/books/3
+Update Book
+{
+    "title": "My Life in Crime",
+    "author": "John Kiriamiti",
+    "isbn": "0-061-96436-0",
+    "price": 1100
+}
+
+Customer
+Search a particular customer http://localhost:8090/api/v1/customers/3
+
+Add Customer
+{
+    "customerSurName": "Wawira",
+    "customerOthertNames": "Caroline Jazrel",
+    "emailAddress": "cjazrel@hotmail.com",
+    "mobileNumber": "245722129096"
+}
+
+Order
+
+Search a particular order http://localhost:8090/api/v1/orders/3
+Search order by customerId http://localhost:8090/api/v1/orders/customers/3/orders
+Search book http://localhost:8090/api/v1/orders/books/3/orders
+```
 ### Ends.
