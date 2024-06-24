@@ -39,92 +39,19 @@ Once the authentication service has run successfully, use the following curl to 
 
 ```dockerignore
 curl --location 'http://localhost:8080/jwt' --header 'Content-Type: application/json' --data-raw '{
-"username": "brian.kamaug@gmail.com",
+"username": "tester",
 "password": "password"
 }
 ```
 The above should generate a token that can be used to authenticate your requests.
 
 #### Step 4. - Running the task service.
-Run the task service. To access the swagger documentation, Use the following url
+Run the book service. To access the swagger documentation, Use the following url
 
 ```
-http://localhost:8081/v1/tasks/webjars/swagger-ui/index.html#/
+http://localhost:8090/v1/tasks/webjars/swagger-ui/index.html#/
 ```
 **Note**: The port may vary depending on which port you will run the service on.
-
-
-### 2. Approach #2 - Running on Minikube.
-We are going to run the applications on a minikube cluster locally. Minikube is a tool
-that setups a minified kubernetes environment locally.
-
-##### Step #1 Housekeeping required before proceeding.
-- Please follow this [guide](https://minikube.sigs.k8s.io/docs/start/) to install minikube on your local machine
-- Please follow this [guide](https://kubernetes.io/docs/tasks/tools/) to install kubectl on your local machine
-- Please follow this [guide](https://docs.docker.com/engine/install/ubuntu/) to install docker on your local machine
-
-#### Step #2 Run the "Pipeline".
-
-On the root path of this project, execute bash file as follows. The following script mimicks what would ideally happen
-in a CI/CD Pipeline by executing the following steps.
-
-1. Runs Test Cases and ensures everything runs successfully.
-2. Building the maven project resulting in a .jar
-2. Building a docker image. (running this using a amd64/aarch64 base image)
-3. Pushing the docker image to a remote repository. (for our case, we are using dockerhub.
-4. Deploying the database and the configs service on a minikube cluster.
-5. Exposes the task service and authentication via a LoadBalancer IP.
-
-Run the following commands.
-```dockerignore
-chmod + ./deployment.sh
-```
-then.
-```dockerignore
-./deployment.sh
-```
-
-The following should be the output of the execution at the end.
-```codeblock
-namespace/staging created
-secret/mysql-password created
-deployment.apps/mysql created
-service/mysql created
-usage: sleep seconds
-deployment.apps/authentication-services created
-deployment.apps/task-services created
-usage: sleep seconds
-service/authentication-services exposed
-service/task-services exposed
-```
-
-#### Step #3 Check the status of running services.
-Use the following command to check the status of the services.
-```dockerignore
-minikube kubectl -- --namespace staging  get pods
-```
-The command will output the following:-
-
-```codeblock
-NAME                                      READY   STATUS             RESTARTS        AGE
-authentication-services-666784d5d-kllmz   0/1     CrashLoopBackOff   6 (4m19s ago)   10m
-mysql-df6854b4b-hltdb                     0/1     ContainerCreating  0               10m
-task-services-59759f7f7-mmhjq             0/1     CrashLoopBackOff   6 (4m34s ago)   10m
-```
-
-**Note**: The Authentication service and the Task Services will remain in CrashLoopBack
-until the database service is completely setup.
-
-Once the database is up and running, We will setup the tasks database in step #4. The database running
-will have a ready status 1/1 as show below.
-
-```codeblock
-NAME                                      READY   STATUS             RESTARTS        AGE
-authentication-services-666784d5d-kllmz   0/1     CrashLoopBackOff   6 (4m19s ago)   10m
-mysql-df6854b4b-hltdb                     1/1     Running            0               10m
-task-services-59759f7f7-mmhjq             0/1     CrashLoopBackOff   6 (4m34s ago)   10m
-```
-
 
 #### Step #4 Setting up the schemas on our database.
 
@@ -162,18 +89,5 @@ mysql> desc orders;
 | mobileNumber | varchar(255) | YES  | MUL | NULL    |                |
 | orderDate    | datetime     | YES  |     | NULL    |                |
 +--------------+--------------+------+-----+---------+----------------+
-
----- Authentication Service.
-```codeblock
-minikube service --namespace staging authentication-services
-```
-Output.
-🏃  Starting tunnel for service authentication-services.
-```curl
-curl --location 'http://127.0.0.1:63037/jwt' --header 'Content-Type: application/json' --data-raw '{
-"username": "brian.kamaug@gmail.com",
-"password": "password"
-}
-```
 
 ### Ends.
