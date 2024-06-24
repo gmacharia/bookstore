@@ -16,6 +16,7 @@ public record BookConfig(
         String successstatusmessage,
         String failedstatusmessage,
         int failurecode,
-        int successcode) {
+        int successcode,
+        String jwtSharedSecret) {
 
 }

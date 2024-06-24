@@ -2,7 +2,7 @@
 
 # Define your Docker Hub credentials
 DOCKER_USERNAME="gmasharia"
-DOCKER_PASSWORD="dckr_pat_tGlsVL34ch7gTf4z4G1wJ-gtdrA"
+DOCKER_PASSWORD="dckr_pat_vujiGz4TZMKBzo1QlelfX7z5zfw"
 
 # Function to login to Docker Hub
 login_to_dockerhub() {
