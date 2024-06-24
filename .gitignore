@@ -32,4 +32,6 @@ build/
 
 ### VS Code ###
 .vscode/
+config/secrets.yml
+*.env
 deployment.sh
